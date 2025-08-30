@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Projects</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-2xl font-bold mb-4">Projects</h1>
+  <a href="/projects/new" class="bg-green-600 text-white px-4 py-2 rounded mb-4 inline-block">+ New Project</a>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <% projects.forEach(p => { %>
+      <div class="bg-white p-4 rounded shadow hover:shadow-lg transition">
+        <h2 class="text-xl font-bold"><a href="/projects/<%= p._id %>"><%= p.name %></a></h2>
+        <p><strong>Company:</strong> <%= p.company %></p>
+        <p><strong>Status:</strong> <%= p.status %></p>
+        <a href="/projects/<%= p._id %>/edit" class="text-blue-600">Edit</a>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

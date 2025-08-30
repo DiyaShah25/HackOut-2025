@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subsidy Programs</title>
+  <style>
+    /* Reset & basic */
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: linear-gradient(135deg, #00a67e, #006d5b); color:#333; min-height:100vh; display:flex; flex-direction:column; }
+
+    /* Header */
+    header {
+      padding: 1rem 2rem;
+      background: rgba(255,255,255,0.9);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow:0 4px 10px rgba(0,0,0,0.2);
+      animation: slideDown 0.8s ease-out;
+    }
+    header h1 { color:#006d5b; font-size:1.8rem; }
+    header a { text-decoration:none; color:#00a67e; font-weight:bold; transition: all 0.3s; }
+    header a:hover { color:#004d3a; }
+
+    /* Container */
+    .container {
+      flex:1;
+      padding:2rem;
+      display:grid;
+      gap:1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Card */
+    .card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    /* Program list */
+    ul { list-style:none; margin-top:1rem; }
+    li {
+      padding: 0.7rem 1rem;
+      margin-bottom:0.8rem;
+      background: #f1f1f1;
+      border-radius: 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition: transform 0.3s, background 0.3s;
+    }
+    li:hover {
+      transform: translateX(5px);
+      background: #e0f7f1;
+    }
+
+    /* Buttons/links */
+    .btn {
+      display:inline-block;
+      margin-top:1rem;
+      padding:0.7rem 1.5rem;
+      background: linear-gradient(135deg, #00a67e, #008e6c);
+      color:#fff;
+      font-weight:bold;
+      text-decoration:none;
+      border-radius:10px;
+      transition: all 0.3s;
+      box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow:0 6px 15px rgba(0,0,0,0.3);
+      background: linear-gradient(135deg, #00c690, #00a67e);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(20px);}
+      to { opacity:1; transform:translateY(0);}
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Responsive */
+    @media(max-width:768px){
+      .container { grid-template-columns: 1fr; padding:1rem; }
+      header { flex-direction: column; align-items:flex-start; }
+      header h1 { font-size:1.5rem; margin-bottom:0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Subsidy Programs</h1>
+    <a href="/">Home</a>
+  </header>
+
+  <div class="container">
+    <!-- Create New Program Card -->
+    <div class="card">
+      <h2>Create New Program</h2>
+      <a href="/subsidy/programs/new" class="btn">Create Program</a>
+    </div>
+
+    <!-- Programs List Card -->
+    <div class="card">
+      <h2>All Programs</h2>
+      <ul>
+        <% programs.forEach(p => { %>
+          <li>
+            <span><strong><%= p.name %></strong> - ₹<%= p.subsidyAmount %></span>
+            <span>Status: <%= p.status %></span>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

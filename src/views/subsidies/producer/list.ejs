@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Projects</title>
+</head>
+<body>
+  <h1>Projects</h1>
+  <a href="/projects/new">➕ Create Project</a>
+  <ul>
+    <% projects.forEach(p => { %>
+      <li>
+        <a href="/projects/<%= p._id %>"><%= p.name %></a>
+        - <%= p.owner %>
+        <form action="/projects/<%= p._id %>/delete" method="POST" style="display:inline;">
+          <button type="submit">🗑 Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>

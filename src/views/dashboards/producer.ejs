@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Producer Dashboard</title>
+  <style>
+    body { margin:0; font-family:'Segoe UI',sans-serif; background:linear-gradient(135deg,#00a67e,#006d5b); color:#333; min-height:100vh; display:flex; flex-direction:column; }
+    header { background:rgba(255,255,255,0.85); padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+    h1 { color:#006d5b; }
+    .container { flex:1; padding:2rem; display:grid; gap:1.5rem; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); }
+    .card { background:rgba(255,255,255,0.95); padding:1.5rem; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:transform 0.3s; }
+    .card:hover { transform:translateY(-5px);}
+    button { background:linear-gradient(135deg,#00a67e,#008e6c); color:#fff; padding:0.7rem 1.5rem; border:none; border-radius:8px; margin-top:1rem; cursor:pointer; transition:all 0.3s;}
+    button:hover { transform:scale(1.05);}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Producer Dashboard</h1>
+    <p>Welcome, <%= user.name %></p>
+  </header>
+  <div class="container">
+    <div class="card">
+      <h2>View Subsidy Schemes</h2>
+      <a href="producer/programs"><button>View Schemes</button></a>
+    </div>
+    <div class="card">
+      <h2>Apply for Scheme</h2>
+      <form action="/projects" method="post">
+        <input type="text" name="programId" placeholder="Program ID" required><br>
+        <input type="text" name="description" placeholder="Project Description" required><br>
+        <button type="submit">Apply</button>
+      </form>
+    </div>
+    <div class="card">
+      <h2>Submit Progress</h2>
+      <form action="/projects/:id/metrics" method="post">
+        <input type="text" name="projectId" placeholder="Project ID" required><br>
+        <input type="text" name="metrics" placeholder="Milestone (e.g., 1000kg)" required><br>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

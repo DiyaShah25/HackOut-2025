@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Project</title></head><body>
+<h2>Project: <%= project.name %></h2>
+<p>Program: <%= project.programId?.name %></p>
+<p>Metrics: volumeKg = <%= project.metrics?.volumeKg || 0 %></p>
+
+<form method="post" action="/subsidies/projects/<%= project._id %>/metrics">
+  <input name="volumeKg" type="number" placeholder="Hydrogen produced (kg)" />
+  <button>Submit Progress</button>
+</form>
+
+<h3>Payouts</h3>
+<ul>
+  <% project.payouts.forEach(p=>{ %>
+    <li>
+      <%= p.amount %> <%=p.currency%> - <%= p.status %> - receipt: <%= p.receiptHash || '-' %>
+      <% if(p.status === 'PENDING') { %>
+        <form method="post" action="/projects/<%=project._id%>/payouts/<%=p._id%>/approve" style="display:inline">
+          <button>Approve (Auditor)</button>
+        </form>
+      <% } %>
+    </li>
+  <% }) %>
+</ul>
+
+<a href="/subsidies/projects">Back</a>
+</body></html>

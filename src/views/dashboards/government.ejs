@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Government Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Global styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #00a67e, #006d5b);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    /* Header */
+    header {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+      animation: slideDown 0.8s ease-out;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 {
+      color: #006d5b;
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    header p {
+      font-weight: bold;
+      color: #444;
+    }
+
+    /* Container */
+    .container {
+      flex: 1;
+      padding: 2rem;
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      animation: slideUp 1s ease-in-out;
+    }
+
+    /* Card */
+    .card {
+      background: rgba(255,255,255,0.95);
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0px 6px 20px rgba(0,0,0,0.15);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: zoomIn 0.8s ease-in-out;
+    }
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+    }
+
+    /* Inputs */
+    input, select {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: border 0.3s;
+    }
+    input:focus, select:focus {
+      border: 1px solid #00a67e;
+      box-shadow: 0 0 6px rgba(0,166,126,0.6);
+    }
+
+    /* Buttons */
+    button {
+      background: linear-gradient(135deg, #00a67e, #008e6c);
+      color: #fff;
+      padding: 0.8rem 1.6rem;
+      border: none;
+      border-radius: 8px;
+      margin-top: 1rem;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    }
+    button:hover {
+      transform: scale(1.07);
+      box-shadow: 0px 6px 18px rgba(0,0,0,0.3);
+      background: linear-gradient(135deg, #00c690, #00a67e);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      header h1 {
+        font-size: 1.5rem;
+      }
+      .container {
+        padding: 1rem;
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <% if (locals.message) { %>
+  <div style="background: #4caf50; color: #fff; padding: 0.7rem 1rem; border-radius: 8px; margin-bottom: 1rem;">
+    <%= message %>
+  </div>
+<% } %>
+
+    <h1>Government Dashboard</h1>
+    <p>Welcome, <%= user.name %></p>
+  </header>
+  <div class="container">
+    <div class="card">
+      <h2>Create Subsidy Scheme</h2>
+      <form action="/subsidy/programs" method="post">
+        <input type="text" name="name" placeholder="Project Name" required>
+        <input type="text" name="milestone" placeholder="Milestone (e.g., 1000 kg hydrogen)" required>
+        <input type="number" name="amount" placeholder="Subsidy Amount" required>
+        <button type="submit">Create Scheme</button>
+      </form>
+    </div>
+    <div class="card">
+      <h2>View All Schemes</h2>
+      <a href="/subsidy/government/programs-list"><button>View Schemes</button></a>
+    </div>
+  </div>
+</body>
+</html>

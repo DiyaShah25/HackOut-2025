@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit <%= project.name %></title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-2xl font-bold mb-4">Edit Project</h1>
+  <form action="/projects/<%= project._id %>" method="POST" class="bg-white p-4 rounded shadow max-w-lg">
+    <input type="text" name="name" value="<%= project.name %>" class="w-full p-2 mb-2 border rounded" required>
+    <input type="text" name="company" value="<%= project.company %>" class="w-full p-2 mb-2 border rounded" required>
+    <input type="text" name="location" value="<%= project.location %>" class="w-full p-2 mb-2 border rounded">
+    <input type="number" name="capacity" value="<%= project.capacity %>" class="w-full p-2 mb-2 border rounded">
+    <textarea name="description" class="w-full p-2 mb-2 border rounded"><%= project.description %></textarea>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
+  </form>
+</body>
+</html>

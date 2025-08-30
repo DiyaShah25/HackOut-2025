@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Create Program</title></head><body>
+<h2>Create Program</h2>
+<form method="post" action="/subsidies/programs">
+  <input name="name" placeholder="Program Name" required/><br/>
+  <textarea name="description" placeholder="Description"></textarea><br/>
+  <input name="payoutAmount" placeholder="Payout amount (INR)" type="number" required/><br/>
+  <p>Single rule example: metrics.volumeKg >= value</p>
+  <input name="rule_fieldPath" value="metrics.volumeKg"/><select name="rule_operator"><option value=">=">&ge;</option></select>
+  <input name="rule_value" type="number" value="10000"/><br/>
+  <button>Create</button>
+</form>
+<a href="/subsidies/programs">Back</a>
+</body></html>

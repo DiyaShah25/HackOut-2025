@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up | Green Hydrogen Subsidy</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #00a67e, #006d5b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      padding: 2rem;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      transform: translateY(0px);
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    h2 {
+      color: #006d5b;
+      margin-bottom: 1rem;
+      animation: slideDown 0.8s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.9rem;
+      margin: 0.7rem 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      border: 1px solid #00a67e;
+      box-shadow: 0px 0px 6px #00a67e;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, #00a67e, #008e6c);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+    }
+
+    p { margin-top: 1rem; }
+    a { color: #00a67e; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .card { padding: 1.5rem; }
+      h2 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Create Account</h2>
+    <form method="post" action="/auth/signup">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+
+      <select name="role" required>
+        <option value="">Select Role</option>
+        <option value="GOVERNMENT">Government</option>
+        <option value="PRODUCER">Producer</option>
+        <option value="AUDITOR">Auditor</option>
+        <option value="BANK">Bank</option>
+      </select>
+
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="/auth/login">Login</a></p>
+  </div>
+</body>
+</html>

@@ -142,11 +142,12 @@
 
     <h1>Government Dashboard</h1>
     <p>Welcome, <%= user.name %></p>
+    <button ><a href="/" style="color: white;text-decoration: none;">LogOut</a></button>
   </header>
   <div class="container">
     <div class="card">
       <h2>Create Subsidy Scheme</h2>
-      <form action="/subsidy/programs" method="post">
+      <form action="/producer/subsidy/programs" method="post">
         <input type="text" name="name" placeholder="Project Name" required>
         <input type="text" name="milestone" placeholder="Milestone (e.g., 1000 kg hydrogen)" required>
         <input type="number" name="amount" placeholder="Subsidy Amount" required>

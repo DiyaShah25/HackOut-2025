@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-     "compile": "npx hardhat compile",
+    "compile": "npx hardhat compile",
     "deploy": "npx hardhat run scripts/deploy.js --network goerli"
   },
   "author": "",
@@ -21,9 +21,13 @@
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "lodash.get": "^4.4.2",
+    "method-override": "^3.0.0",
     "mongoose": "^8.18.0",
     "nanoid": "^5.1.5",
-    "nodemailer": "^7.0.5"
+    "nodemailer": "^7.0.6",
+    "qrcode": "^1.5.4",
+    "razorpay": "^2.9.6",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",

@@ -1,80 +1,40 @@
-// src/modules/subsidies/controllers/program.controller.js
-const Program = require("../models/program.model");
+const Project=require("../../producers/models/project.models");
 
-// Show all programs in the government dashboard
+// List all projects of a producer
 const list = async (req, res) => {
   try {
-    const programs = await Program.find().sort({ createdAt: -1 });
-    res.render("dashboards/government", {
-      programs,
-      user: req.user || { name: "Admin" },
-      message: null,
-    });
+    const projects = await Project.find({ producer: req.user._id }).sort({ createdAt: -1 });
+    res.render("dashboards/producer", { projects, user: req.user, message: null });
   } catch (err) {
-    console.error("Error fetching programs:", err);
-    res.status(500).send("Error fetching programs");
+    console.error("Error fetching projects:", err);
+    res.status(500).send("Error fetching projects");
   }
 };
 
-// Optional: separate create form (renders same dashboard)
+// Show form to create a project
 const createForm = async (req, res) => {
-  try {
-    const programs = await Program.find().sort({ createdAt: -1 });
-    res.render("dashboards/government", {
-      programs,
-      user: req.user || { name: "Admin" },
-      message: null,
-    });
-  } catch (err) {
-    console.error("Error rendering form:", err);
-    res.status(500).send("Error rendering form");
-  }
+  res.render("dashboards/producer", { projects: [], user: req.user, message: null });
 };
 
-// Handle form submission and render updated dashboard
+// Handle project creation
 const create = async (req, res) => {
   try {
-    const { name, milestone, amount } = req.body;
-
-    // Basic validation
-    if (!name || !milestone || !amount) {
-      const programs = await Program.find().sort({ createdAt: -1 });
-      return res.render("dashboards/government", {
-        programs,
-        user: req.user || { name: "Admin" },
-        message: "❌ All fields are required",
-      });
+    const { name, milestone, metrics } = req.body;
+    if (!name || !milestone) {
+      return res.render("dashboards/producer", { projects: [], user: req.user, message: "All fields are required" });
     }
-
-    const subsidyAmount = parseFloat(amount);
-    if (isNaN(subsidyAmount) || subsidyAmount < 0) {
-      const programs = await Program.find().sort({ createdAt: -1 });
-      return res.render("dashboards/government", {
-        programs,
-        user: req.user || { name: "Admin" },
-        message: "❌ Invalid subsidy amount",
-      });
-    }
-
-    // Create and save the program
-    const program = new Program({ name, milestone, subsidyAmount });
-    await program.save();
-
-    // Render dashboard with updated programs
-    const programs = await Program.find().sort({ createdAt: -1 });
-    res.render("dashboards/government", {
-      programs,
-      user: req.user || { name: "Admin" },
-      message: "✅ Program created successfully",
+    await Project.create({
+      name,
+      milestone,
+      metrics,
+      producer: req.user._id,
+      status: "Pending Approval",
+      payouts: [],
     });
+    res.redirect("/producer/projects");
   } catch (err) {
-    console.error("Error creating program:", err);
-    const programs = await Program.find().sort({ createdAt: -1 });
-    res.render("dashboards/government", {
-      programs,
-      user: req.user || { name: "Admin" },
-      message: "❌ Error creating program",
-    });
+    console.error(err);
+    res.status(500).send("Error creating project");
   }
 };
 

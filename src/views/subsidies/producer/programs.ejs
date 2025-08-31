@@ -12,11 +12,12 @@
     <% programs.forEach(program => { %>
       <div class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition">
         <h2 class="text-xl font-semibold mb-2"><%= program.name %></h2>
+        
+        <p><strong>ID: </strong> <%= program._id %></p>
         <p><strong>Milestone:</strong> <%= program.milestone %></p>
         <p><strong>Subsidy Amount:</strong> ₹<%= program.subsidyAmount %></p>
         <p><strong>Status:</strong> <%= program.status %></p>
-        <a href="/producer/programs/<%= program._id %>/new" class="mt-3 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Project</a>
-      </div>
+        </div>
     <% }) %>
   </div>
 </body>

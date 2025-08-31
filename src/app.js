@@ -3,6 +3,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const path = require("path");
+require('dotenv').config(); // load .env variables
 
 // Routes
 const authRoutes = require("./modules/core/auth.routes");
@@ -63,9 +64,9 @@ app.get("/dashboard", (req, res) => {
 
 // ✅ Routes
 const projectRoutes = require("./modules/subsidies/routes");
-app.use("/projects", projectRoutes);
+app.use("/producer", projectRoutes);
 
-
-
+const producerRoutes = require('../producer_routes');
+app.use("/producer", producerRoutes);
 
 module.exports = app;

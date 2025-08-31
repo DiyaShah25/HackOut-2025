@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Producer Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to right, #e0f7e9, #f3fff8);
+      margin: 0;
+      color: #1a202c;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: linear-gradient(to right, #43a047, #66bb6a);
+      color: white;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      animation: slideDown 1s ease forwards;
+    }
+
+    @keyframes slideDown {
+      0% { opacity: 0; transform: translateY(-30px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeUp 1s ease forwards;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.15);
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+
+    .card h2 {
+      color: #2e7d32;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul li {
+      background: #f1fdf4;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      border-left: 6px solid #66bb6a;
+      animation: fadeSlide 0.8s ease forwards;
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateX(-20px);}
+      100% { opacity: 1; transform: translateX(0);}
+    }
+
+    ul li strong {
+      color: #2e7d32;
+    }
+
+    .payouts ul li {
+      background: #e8f5e9;
+      border-left: 4px solid #81c784;
+      font-size: 0.9rem;
+      padding: 0.7rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.5rem;
+        padding: 1rem 0.5rem;
+      }
+
+      .card h2 {
+        font-size: 1.2rem;
+      }
+
+      ul li {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    🌱 Producer Dashboard - Green Energy Subsidy
+  </header>
+
+  <div class="dashboard">
+    <!-- Projects List -->
+    <div class="card">
+      <h2>Your Projects</h2>
+      <% if (locals.projects && projects.length > 0) { %>
+        <ul>
+          <% projects.forEach(project => { %>
+            <li>
+              <strong>Project Name:</strong> <%= project.name %> <br>
+              <strong>Description:</strong> <%= project.description || "N/A" %> <br>
+              <strong>Milestone:</strong> <%= project.milestone %> <br>
+              <strong>Metrics:</strong> <%= project.metrics || "Not submitted yet" %> <br>
+              <strong>Status:</strong> <%= project.status %> <br>
+              <strong>Program:</strong> <%= project.program ? project.program.name : "N/A" %> <br>
+              <strong>Bank Details:</strong> 
+                <%= project.bankDetails && project.bankDetails.accountNumber 
+                      ? (project.bankDetails.accountName + " - " + project.bankDetails.accountNumber + " (" + project.bankDetails.ifsc + ")") 
+                      : "Not Provided" %> <br>
+              <strong>Created At:</strong> <%= project.createdAt.toDateString() %> <br>
+              <strong>Updated At:</strong> <%= project.updatedAt.toDateString() %> <br>
+
+              <% if (project.payouts && project.payouts.length > 0) { %>
+                <div class="payouts mt-2">
+                  <strong>Payouts:</strong>
+                  <ul>
+                    <% project.payouts.forEach(payout => { %>
+                      <li>
+                        Milestone: <%= payout.milestone %> | 
+                        Amount: ₹<%= payout.amount %> | 
+                        Approved: <%= payout.approved ? "✅" : "❌" %> | 
+                        Paid: <%= payout.paid ? "✅" : "❌" %> | 
+                        Date: <%= payout.date.toDateString() %> | 
+                        Audit Log: <%= payout.auditLog || "N/A" %>
+                      </li>
+                    <% }) %>
+                  </ul>
+                </div>
+              <% } else { %>
+                <p class="mt-2">No payouts yet.</p>
+              <% } %>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>No projects yet.</p>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

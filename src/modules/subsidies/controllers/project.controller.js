@@ -1,58 +1,74 @@
-const ProducerProject = require('../models/project.model');
-const Program = require('../models/program.model'); // Government programs
+const Project = require("../../../../producer_productSchema");
+const Program = require("../../subsidies/models/program.model");
 
-// View all programs (for producer to choose)
-exports.viewPrograms = async (req, res) => {
-  const programs = await Program.find({ status: "Verified" });
-  res.render('producer/programs', { programs });
+// 1. List all projects of a producer
+const list = async (req, res) => {
+  try {
+    const projects = await Project.find({ producer: req.user._id }).populate("program");
+    res.render("dashboards/producer", { projects, user: req.user, message: null });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching projects");
+  }
 };
 
-// Show form to create project under a program
-exports.showCreateProjectForm = async (req, res) => {
-  const program = await Program.findById(req.params.programId);
-  if (!program) return res.redirect('/producer/programs');
-  res.render('producer/newProject', { program });
+// 2. Show subsidy schemes for applying
+const showPrograms = async (req, res) => {
+  try {
+    const programs = await Program.find().sort({ createdAt: -1 });
+    console.log(programs);
+    res.render("subsidies/producer/programs", { programs, user: req.user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching subsidy programs");
+  }
 };
 
-// Create new project
-exports.createProject = async (req, res) => {
-  const { name, description, company, location, capacity, programId } = req.body;
-  await ProducerProject.create({
-    name, description, company, location, capacity,
-    program: programId
-  });
-  res.redirect('/producer/projects');
+// 3. Apply for a program (create project)
+const applyProgram = async (req, res) => {
+  try {
+    const { programId, description } = req.body;
+    if (!programId || !description) {
+      return res.send("Program ID and Description are required");
+    }
+
+    const program = await Program.findById(programId);
+    if (!program) return res.send("Program not found");
+
+    await Project.create({
+      name: program.name,
+      milestone: program.milestone,
+      metrics: description,
+      producer: req.user._id,
+      program: program._id,
+      status: "Pending Approval",
+      payouts: [],
+    });
+
+    res.redirect("subsidies/producer/programs");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error applying for program");
+  }
 };
 
-// List all projects of producer
-exports.listProjects = async (req, res) => {
-  const projects = await ProducerProject.find().populate('program');
-  res.render('producer/projects', { projects });
+// 4. Submit metrics/milestone for project
+const submitMetrics = async (req, res) => {
+  try {
+    const { projectId, metrics } = req.body;
+    if (!projectId || !metrics) return res.send("Project ID and Metrics are required");
+
+    const project = await Project.findById(projectId);
+    if (!project) return res.send("Project not found");
+
+    project.payouts.push({ milestone: project.milestone, metrics, approved: false });
+    await project.save();
+
+    res.redirect("subsidies/producer/projects");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error submitting metrics");
+  }
 };
 
-// Show project details + milestones
-exports.showProject = async (req, res) => {
-  const project = await ProducerProject.findById(req.params.id).populate('program');
-  res.render('producer/showProject', { project });
-};
-
-// Update project details
-exports.updateProject = async (req, res) => {
-  await ProducerProject.findByIdAndUpdate(req.params.id, req.body);
-  res.redirect(`/producer/projects/${req.params.id}`);
-};
-
-// Delete project
-exports.deleteProject = async (req, res) => {
-  await ProducerProject.findByIdAndDelete(req.params.id);
-  res.redirect('/producer/projects');
-};
-
-// Add milestone
-exports.addMilestone = async (req, res) => {
-  const { title, description, targetDate } = req.body;
-  const project = await ProducerProject.findById(req.params.id);
-  project.milestones.push({ title, description, targetDate });
-  await project.save();
-  res.redirect(`/producer/projects/${req.params.id}`);
-};
+module.exports = { list, showPrograms, applyProgram, submitMetrics };
